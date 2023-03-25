@@ -2,6 +2,19 @@
 
 ## Simple Scala 
 
+__main__
+```scala
+// scala 2
+object Main {
+    def main(args: Array[String]): Unit = {
+        println("hi!")
+    }
+}
+Main.main(args=Array("1"))
+// scala 3
+@main def hello()=println("bye")
+```
+
 __Expression__
 
 ```scala
@@ -68,8 +81,88 @@ val messenger = Messenger("Hello, ", "!") // scala 3
 ```
 
 __Case Classes__
-`Good for Pattern Matching`
+`Good for Pattern Matching` -> Instances of case classes are ==immutable==. They are therefore compared by values (_rather than by reference like standard classes_)
+
+`case class Location(a: Float, b: Float)` no `new` needed
+
+```scala
+val loc1 = Location(1.1, 1.2)
+val loc2 = Location(1.1, 1.2)
+val loc3 = Location(3.11, 2.01)
+// scala3
+if loc1 == loc2 then
+    println(s"$loc1 and $loc2 are the same")
+else
+    println(s"$loc2 and $loc1 are not the same")
+// scala 2
+if (loc1 == loc3){
+    println(s"$loc1 is the same as $loc3")
+} else {
+    println(s"$loc3 is not the same as $loc1")
+}
+```
 
 __Objects__
+Objects are single instances of their own definitions. ==Singletons of their own classes==.
+```scala
+object SomeFactory{
+    private var somenum:Int = 0
+    def create(): Int = {
+        somenum += 1
+        somenum
+    }
+}
+var newSome = SomeFactory.create()
+```
 
 __Traits__
+==Traits are abstract data types containing certain fields and methods.== Its like a `protocol`.
+
+```scala
+// scala 2
+trait CanFly {
+  def Fly(sound: String): Unit =
+    println("Fly w/ the sound " + sound + "!")
+}
+// scala 3
+trait CanFly:
+    def Fly(sound: String): Unit =
+        println("Fly w/ the sound " + sound + "!")
+```
+Then create `class` with `extends` keyword and `override` existing functions.
+```scala
+class Plane extends CanFly
+
+```
+
+## More Scala
+
+### Arguments and Names
+```scala
+def showLocation(x: Float, y: Float): Unit = 
+    println(s"the location has x=$x, y=$y.")
+// scala> showLocation(1,2)
+// the location has x=1.0, y=2.0.
+// scala> showLocation(1,y=2)
+// the location has x=1.0, y=2.0.
+```
+
+### Default Parameter Values
+Something like `(a:Int=0, b:String="bye")`
+
+### Control Structures
+- Control Structure
+  - if / then / else
+    - `scala2` -> `if (){ } else if (){ } else { }`
+    - `scala3` -> `if then else if then else` it has a *unique* `end if`
+  - for loops
+    - `scala2` -> `for () {   }`
+    - `scala3` -> `for do` w/ indentation
+  - while loops
+    - `scala2` -> `while () {   }`
+    - `scala3` -> `while do` w/ indentation
+  - try / catch / finally 
+- Unique Constructs
+  - `for` expressions / comprehensions
+  - `match` expressions
+    - match with `case`
